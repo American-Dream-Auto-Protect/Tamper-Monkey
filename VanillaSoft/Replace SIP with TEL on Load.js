@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Replace SIP with TEL on Load
 // @namespace    http://tampermonkey.net/
-// @version      1.0
-// @description  Automatically change SIP to TEL for data-softphoneurl attributes on page load
+// @version      1.1
+// @description  Automatically change SIP to TEL for data-softphoneurl attributes on page load and convert buttons to anchors with data-dial attributes, prepending state abbreviation if needed
 // @author       AM
 // @match        https://s2.vanillasoft.net/web/default.asp
 // @grant        none
@@ -15,9 +15,13 @@
 
     console.log("Tampermonkey script Replace SIP started");
 
-    function convertButtonToAnchor(button) {
-        const dialNumber = button.getAttribute('data-dial');
+    function convertButtonToAnchor(button, stateAbbreviation) {
+        let dialNumber = button.getAttribute('data-dial');
         if (dialNumber) {
+            dialNumber = dialNumber.replace(/\D/g, ''); // Remove non-numeric characters
+            if (dialNumber.length < 12 && stateAbbreviation.length === 2) {
+                dialNumber = `${stateAbbreviation}${dialNumber}`;
+            }
             const anchor = document.createElement('a');
             anchor.href = `tel:${dialNumber}`;
             anchor.title = button.title;
@@ -30,10 +34,12 @@
     }
 
     function setupButtonListeners(doc) {
+        const stateField = doc.querySelector('#State');
+        const stateAbbreviation = stateField ? stateField.getAttribute('data-previousvalue') : '';
         const buttons = doc.querySelectorAll('button[data-dial]');
         // console.log('Buttons Found:', buttons);
         buttons.forEach(button => {
-            convertButtonToAnchor(button);
+            convertButtonToAnchor(button, stateAbbreviation);
         });
     }
 
