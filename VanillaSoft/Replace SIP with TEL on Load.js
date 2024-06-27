@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Replace SIP with TEL on Load
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  Automatically change SIP to TEL for data-softphoneurl attributes on page load
 // @author       AM
-// @match        https://s2.vanillasoft.net/web/default.asp
+// @match        https://s2.vanillasoft.net/*
 // @grant        none
 // @updateURL    https://raw.githubusercontent.com/American-Dream-Auto-Protect/Tamper-Monkey/main/VanillaSoft/Replace%20SIP%20with%20TEL%20on%20Load.js
 // @downloadURL  https://raw.githubusercontent.com/American-Dream-Auto-Protect/Tamper-Monkey/main/VanillaSoft/Replace%20SIP%20with%20TEL%20on%20Load.js
